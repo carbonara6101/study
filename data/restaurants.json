@@ -6,5 +6,13 @@
     "website": "https://youtube.com",
     "description": "It's awesome",
     "id": "5a61f177-74f8-4d1e-b8fd-fa383f1af863"
+  },
+  {
+    "name": "로데오",
+    "address": "radio",
+    "cuisine": "스필릿",
+    "website": "https://naver.com",
+    "description": "lagk",
+    "id": "ed8a26ec-ad6b-4ab5-b525-b2b17c8bd8a4"
   }
 ]

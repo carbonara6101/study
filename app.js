@@ -17,7 +17,7 @@ app.use(express.json()); // req.body 사용해야 할때
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.render("index.ejs"); 
+  res.render("index.ejs");
 });
 
 app.get("/restaurants", (req, res) => {
@@ -26,15 +26,26 @@ app.get("/restaurants", (req, res) => {
   const fileData = fs.readFileSync(filePath);
   const storedRestaurants = JSON.parse(fileData);
 
-  res.render("restaurants.ejs", { 
-    numberOfRestaurants: storedRestaurants.length, 
-    restaurants: storedRestaurants 
-   });
+  res.render("restaurants.ejs", {
+    numberOfRestaurants: storedRestaurants.length,
+    restaurants: storedRestaurants,
+  });
 });
 
-app.get("/restaurants/:id", (req,res)=>{
-    const restaurantId = req.params.id; 
-    res.render("restaurants-detail.ejs", {rid: restaurantId});
+app.get("/restaurants/:id", (req, res) => {
+  const restaurantId = req.params.id;
+  const filePath = path.join(__dirname, "data", "restaurants.json");
+
+  const fileData = fs.readFileSync(filePath);
+  const storedRestaurants = JSON.parse(fileData);
+
+  for (const restaurant of storedRestaurants) {
+    if (restaurant.id === restaurantId){
+      return res.render("restaurants-detail.ejs", { restaurant: restaurant });
+    }
+  }
+
+  res.render("404.ejs");
 });
 
 app.get("/recommend", (req, res) => {
@@ -63,6 +74,14 @@ app.get("/confirm", (req, res) => {
 
 app.get("/about", (req, res) => {
   res.render("about.ejs");
+});
+
+app.use((req,res)=>{
+  res.render("404.ejs");
+})
+
+app.use((error, req, res, next)=>{
+  res.render("500.ejs")
 });
 
 app.listen(3000);
